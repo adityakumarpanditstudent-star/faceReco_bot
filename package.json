@@ -1,0 +1,11 @@
+{
+  "name": "facevault-ai",
+  "version": "1.0.0",
+  "description": "AI-powered face recognition with real-time mesh visualization and self-learning",
+  "scripts": {
+    "dev": "npx -y serve -l 3000 --cors",
+    "start": "npx -y serve -l 3000 --cors"
+  },
+  "keywords": ["face-recognition", "ai", "mesh", "self-learning"],
+  "license": "MIT"
+}

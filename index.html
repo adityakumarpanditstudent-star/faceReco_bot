@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FaceVault AI — Intelligent Face Recognition & Self-Learning</title>
+    <meta name="description" content="AI-powered real-time face recognition with mesh visualization and self-learning capabilities. Detects, maps, and remembers faces — works on desktop and mobile.">
+    <meta name="theme-color" content="#0a0a1a">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SCREEN 1: Loading / Model Download          -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="loading-screen" class="screen active">
+        <div class="particle-bg" id="particle-bg"></div>
+        <div class="loading-container">
+            <div class="logo-orb">
+                <div class="orb-ring ring-1"></div>
+                <div class="orb-ring ring-2"></div>
+                <div class="orb-ring ring-3"></div>
+                <div class="orb-core">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32">
+                        <path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18M3 9h18"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                </div>
+            </div>
+            <h1 class="brand-title">Face<span class="brand-highlight">Vault</span><span class="brand-ai">AI</span></h1>
+            <p class="brand-tagline">Neural Face Recognition Engine</p>
+            <p class="loading-text" id="loading-status">Initializing neural networks...</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+                <div class="progress-glow" id="progress-glow"></div>
+            </div>
+            <div class="loading-details" id="loading-details">
+                <span class="detail-item">
+                    <span class="detail-dot"></span>
+                    Loading face detection model
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SCREEN 2: Camera Permission Request         -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="permission-screen" class="screen">
+        <div class="particle-bg"></div>
+        <div class="permission-container">
+            <div class="scan-icon-wrapper">
+                <div class="scan-rings">
+                    <div class="scan-ring sr-1"></div>
+                    <div class="scan-ring sr-2"></div>
+                    <div class="scan-ring sr-3"></div>
+                </div>
+                <div class="scan-icon">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" width="64" height="64">
+                        <rect x="4" y="4" width="16" height="16" rx="3" stroke-dasharray="4 2"/>
+                        <rect x="44" y="4" width="16" height="16" rx="3" stroke-dasharray="4 2"/>
+                        <rect x="4" y="44" width="16" height="16" rx="3" stroke-dasharray="4 2"/>
+                        <rect x="44" y="44" width="16" height="16" rx="3" stroke-dasharray="4 2"/>
+                        <circle cx="32" cy="28" r="8"/>
+                        <path d="M22 44c0-6 4-10 10-10s10 4 10 10"/>
+                        <line x1="32" y1="2" x2="32" y2="8" stroke-opacity="0.4"/>
+                        <line x1="32" y1="56" x2="32" y2="62" stroke-opacity="0.4"/>
+                        <line x1="2" y1="32" x2="8" y2="32" stroke-opacity="0.4"/>
+                        <line x1="56" y1="32" x2="62" y2="32" stroke-opacity="0.4"/>
+                    </svg>
+                </div>
+            </div>
+
+            <h1 class="permission-title">Camera Access Required</h1>
+            <p class="permission-desc">FaceVault AI needs your camera to perform real-time face detection, mesh mapping, and intelligent recognition — all processed locally on your device.</p>
+
+            <button id="btn-connect" class="btn-primary btn-glow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+                    <path d="M23 7l-7 5 7 5V7z"/>
+                    <rect x="1" y="5" width="15" height="14" rx="2"/>
+                </svg>
+                <span>Connect Camera</span>
+                <div class="btn-shimmer"></div>
+            </button>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <h3>100% Private</h3>
+                    <p>All AI processing runs locally in your browser. No data leaves your device.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                    </div>
+                    <h3>Real-Time Mesh</h3>
+                    <p>68-point facial landmark mesh drawn live on every detected face.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                            <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
+                        </svg>
+                    </div>
+                    <h3>Self-Learning</h3>
+                    <p>Automatically remembers and learns new faces over time, improving recognition.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SCREEN 3: Main Application                  -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="app-screen" class="screen">
+        <div class="app-layout">
+
+            <!-- Camera Viewport -->
+            <div class="camera-viewport" id="camera-viewport">
+                <video id="video" autoplay playsinline muted></video>
+                <canvas id="overlay-canvas"></canvas>
+
+                <!-- HUD Overlay -->
+                <div class="viewport-hud">
+                    <div class="hud-top-bar">
+                        <div class="hud-left">
+                            <div class="hud-indicator" id="detection-indicator">
+                                <span class="indicator-dot"></span>
+                                <span class="indicator-text">Scanning...</span>
+                            </div>
+                        </div>
+                        <div class="hud-center">
+                            <span class="hud-brand">FaceVault<span class="brand-ai">AI</span></span>
+                        </div>
+                        <div class="hud-right">
+                            <button id="btn-quick-name" class="hud-btn hud-name-btn" title="Name Detected Face">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                    <line x1="19" y1="8" x2="19" y2="14"/>
+                                    <line x1="16" y1="11" x2="22" y2="11"/>
+                                </svg>
+                                <span>Name Face</span>
+                            </button>
+                            <span class="hud-fps" id="fps-display">-- FPS</span>
+                            <button id="btn-toggle-voice" class="hud-btn voice-btn active" title="Toggle Voice Announcements">
+                                <svg id="voice-icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                                    <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
+                                </svg>
+                                <svg id="voice-icon-off" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                                    <line x1="23" y1="9" x2="17" y2="15"/>
+                                    <line x1="17" y1="9" x2="23" y2="15"/>
+                                </svg>
+                            </button>
+                            <button id="btn-switch-camera" class="hud-btn" title="Switch Camera">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                                    <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+                                    <circle cx="12" cy="13" r="4"/>
+                                </svg>
+                            </button>
+                            <button id="btn-open-sidebar" class="hud-btn sidebar-toggle" title="Open Panel">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                                    <line x1="3" y1="6" x2="21" y2="6"/>
+                                    <line x1="3" y1="12" x2="21" y2="12"/>
+                                    <line x1="3" y1="18" x2="21" y2="18"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recognition Pop-up Banner -->
+                    <div id="recognition-banner" class="recognition-banner hidden">
+                        <div class="recognition-avatar">
+                            <img id="recognition-avatar-img" src="" alt="Face">
+                        </div>
+                        <div class="recognition-content">
+                            <div class="recognition-header">
+                                <span class="recognition-badge">🎯 VERIFIED SUBJECT</span>
+                                <span class="recognition-conf" id="recognition-conf">98% Match</span>
+                            </div>
+                            <div class="recognition-name" id="recognition-name">Alex</div>
+                            <div class="recognition-greeting" id="recognition-greeting">नमस्ते Alex जी, आपका स्वागत है! 🙏</div>
+                        </div>
+                    </div>
+
+                    <!-- Scan line animation -->
+                    <div class="scan-line" id="scan-line"></div>
+
+                    <!-- Bottom info bar -->
+                    <div class="hud-bottom-bar">
+                        <div class="face-info-strip" id="face-info-strip"></div>
+                    </div>
+                </div>
+
+                <!-- Learning indicator -->
+                <div class="learning-indicator hidden" id="learning-indicator">
+                    <div class="learning-pulse"></div>
+                    <span>Learning new face...</span>
+                </div>
+            </div>
+
+            <!-- Sidebar Panel -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <h2 class="sidebar-brand">Face<span class="brand-highlight">Vault</span></h2>
+                    <button id="btn-close-sidebar" class="btn-icon-only" title="Close Panel">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="sidebar-content">
+                    <!-- Stats Cards -->
+                    <div class="section-label">Analytics</div>
+                    <div class="stats-grid">
+                        <div class="stat-card stat-detected">
+                            <div class="stat-value" id="stat-detected">0</div>
+                            <div class="stat-label">Faces Now</div>
+                        </div>
+                        <div class="stat-card stat-learned">
+                            <div class="stat-value" id="stat-learned">0</div>
+                            <div class="stat-label">Learned</div>
+                        </div>
+                        <div class="stat-card stat-recognized">
+                            <div class="stat-value" id="stat-recognized">0</div>
+                            <div class="stat-label">Recognized</div>
+                        </div>
+                        <div class="stat-card stat-sessions">
+                            <div class="stat-value" id="stat-sessions">0</div>
+                            <div class="stat-label">Sessions</div>
+                        </div>
+                    </div>
+
+                    <!-- Learning Progress -->
+                    <div class="section-label">Training Progress</div>
+                    <div class="training-card" id="training-card">
+                        <div class="training-bar">
+                            <div class="training-fill" id="training-fill"></div>
+                        </div>
+                        <div class="training-info">
+                            <span id="training-status">Waiting for faces...</span>
+                            <span id="training-samples">0 samples</span>
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="section-label">Controls</div>
+                    <div class="controls-section">
+                        <div class="control-row">
+                            <label for="mesh-style">Mesh Style</label>
+                            <select id="mesh-style" class="control-select">
+                                <option value="neon">✦ Neon Wireframe</option>
+                                <option value="filled">▣ Filled Mesh</option>
+                                <option value="dots">⊙ Dots Only</option>
+                                <option value="cyber">◈ Cyber Grid</option>
+                            </select>
+                        </div>
+                        <div class="control-row">
+                            <label for="mesh-color">Mesh Color</label>
+                            <select id="mesh-color" class="control-select">
+                                <option value="cyan">Cyan</option>
+                                <option value="magenta">Magenta</option>
+                                <option value="lime">Lime</option>
+                                <option value="gold">Gold</option>
+                                <option value="rainbow">Rainbow</option>
+                            </select>
+                        </div>
+                        <div class="control-row">
+                            <label for="greeting-lang">Greeting Language</label>
+                            <select id="greeting-lang" class="control-select">
+                                <option value="hindi" selected>🇮🇳 Hindi (नमस्ते)</option>
+                                <option value="hinglish">🇮🇳 Hinglish</option>
+                                <option value="bilingual">🌐 Hindi + English</option>
+                                <option value="english">🇬🇧 English</option>
+                            </select>
+                        </div>
+                        <div class="control-row">
+                            <label for="param-name-input">Name Parameter</label>
+                            <div class="input-with-btn">
+                                <input type="text" id="param-name-input" class="control-input" placeholder="e.g. Alex" maxlength="30">
+                                <button id="btn-assign-name" class="btn-sm" title="Learn Current Face with this Name">Learn</button>
+                            </div>
+                        </div>
+                        <div class="control-row toggle-row">
+                            <label for="toggle-voice-sidebar">Voice Announcements</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="toggle-voice-sidebar" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="control-row toggle-row">
+                            <label for="auto-learn">Auto-Learn</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="auto-learn" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="control-row">
+                            <label for="sensitivity">Match Threshold</label>
+                            <div class="range-wrapper">
+                                <input type="range" id="sensitivity" class="control-range" min="0.3" max="0.8" step="0.05" value="0.55">
+                                <span class="range-value" id="sensitivity-value">0.55</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Face Gallery -->
+                    <div class="section-label">
+                        Learned Faces
+                        <span class="badge" id="gallery-count">0</span>
+                    </div>
+                    <div class="gallery-grid" id="gallery-grid">
+                        <div class="gallery-empty" id="gallery-empty">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32" opacity="0.4">
+                                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            <p>No faces learned yet.<br>Show your face to the camera!</p>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="section-label">Actions</div>
+                    <div class="actions-section">
+                        <button id="btn-capture" class="btn-action btn-capture">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                <circle cx="12" cy="12" r="10"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            Capture & Name Face
+                        </button>
+                        <button id="btn-export" class="btn-action btn-export">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                                <polyline points="7 10 12 15 17 10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                            Export Database
+                        </button>
+                        <button id="btn-clear-db" class="btn-action btn-danger">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6l-2 14H7L5 6"/>
+                                <path d="M10 11v6"/>
+                                <path d="M14 11v6"/>
+                                <path d="M9 6V4h6v2"/>
+                            </svg>
+                            Clear All Data
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Sidebar overlay for mobile -->
+            <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- MODAL: Name a face                          -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="name-modal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Identify This Face</h3>
+                <button id="modal-close" class="btn-icon-only">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-preview-wrapper">
+                    <canvas id="modal-face-preview" class="face-preview-canvas" width="160" height="160"></canvas>
+                </div>
+                <input type="text" id="modal-face-name" class="modal-input" placeholder="Enter a name for this face..." autocomplete="off" maxlength="30">
+                <p class="modal-hint">This face will be remembered for future recognition sessions.</p>
+            </div>
+            <div class="modal-actions">
+                <button id="modal-save" class="btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Save Face
+                </button>
+                <button id="modal-cancel" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.14/dist/face-api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
